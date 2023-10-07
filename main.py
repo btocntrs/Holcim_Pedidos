@@ -11,8 +11,6 @@ import pytesseract
 
 from functools import reduce
 from PIL import Image
-import subprocess
-import os
 
 from entrada import Entrada
 
