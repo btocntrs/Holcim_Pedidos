@@ -126,21 +126,6 @@ btn_fecha.click()
 wait.until(EC.text_to_be_present_in_element((By.XPATH, '//*[@id="GFPF.ConsultaPedidosPorFacturarView.EBELN_0_editor.0"]'), ""))
 print("Texto esperado con exito")
 
-# CODIGO COMENTADO POR AHORA--------------------------------------------------------
-# Ruta de la imagen que deseas abrir (nombre de archivo)
-#nombre_imagen = 'tabla_pedidos.png'
-
-#tabla_pedidos = driver.find_element(By.XPATH, '//*[@id="GFPF.ConsultaPedidosPorFacturarView.GrupoListaPedidos"]')
-#tabla_pedidos.screenshot(nombre_imagen)
-
-# Obtiene la ruta completa del archivo de imagen
-#ruta_imagen = os.path.abspath(nombre_imagen)
-
-# Abre la imagen y la muestra en la aplicación de visor de imágenes predeterminada
-#img = Image.open(ruta_imagen)
-#img.show()
-# ----------------------------------------------------------------------------------------------
-
 # Obtenemos la tabla que tiene los datos
 tabla = driver.find_element(By.XPATH, '/html/body/table/tbody/tr/td/div/div[1]/span/span[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr/td[1]/table')
 
