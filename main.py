@@ -151,10 +151,11 @@ for fila in filas:
         planta = celdas[12].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME, "span").text
         nota = celdas[15].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME, "span").text
         
-        entradas.append(Entrada(pedido, fecha, descripcion, cantidad, (importe/cantidad), importe, planta, nota))
+        entrada = Entrada(pedido, fecha, descripcion, cantidad, importe, planta, nota)
         
-        print(f"""{pedido}  {fecha} {descripcion}   {cantidad}      {importe/cantidad}      {importe}   {planta}    {nota}
-              -------------------------------------------------------------------------------""")
+        entradas.append(entrada)
+        print(entrada)
+
     except NoSuchElementException:
         break
 
@@ -168,7 +169,6 @@ agua_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, pipas_escarcega
 
 hielo_escarcega = filter(lambda entrada: 'HIELO' in entrada.descripcion, planta_escarcega)
 hielo_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, hielo_escarcega, 0)
-
 
 planta_candelaria = filter(lambda entrada: 'Cande' in entrada.planta, entradas)
 planta_candelaria = list(planta_candelaria)
