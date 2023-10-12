@@ -135,7 +135,7 @@ filas = filas[2:]
 
 entradas = []
 
-print(f"Pedido      Fecha       Descripcion         Cantidad    Precio  Importe         Planta              Nota")
+print(f"\nPedido      Fecha       Descripcion         Cantidad    Precio  Importe         Planta              Nota")
 
 for fila in filas:
     celdas = fila.find_elements(By.TAG_NAME, "td")
@@ -153,34 +153,149 @@ for fila in filas:
         
         entrada = Entrada(pedido, fecha, descripcion, cantidad, importe, planta, nota)
         
-        entradas.append(entrada)
+        # Dado que por ahora existe una entrada de hielo con un precio incorrecto, por ahora parace ser mejor
+        # ignorar esa entrada.
+        if entrada.precio != 1.82:
+            entradas.append(entrada)
+        
+        # Aun así la entrada de imprimirá, solo se ignorará de la lista de entradas a tener en cuenta los calculos totales
         print(entrada)
 
     except NoSuchElementException:
         break
 
-print(f"CANTIDAD DE ENTRADAS {len(entradas)}\n")
+print(f"\nHAY {len(entradas)} EN TOTAL\n")
 
+# Filtramos las entradas correspondientes a la planta Escarcega
 planta_escarcega = filter(lambda entrada: 'Esc' in entrada.planta, entradas)
 planta_escarcega = list(planta_escarcega)
 
+# Filtramos las entredas que correspondan a Agua para concreto
 pipas_escarcega = filter(lambda entrada: 'AGUA' in entrada.descripcion, planta_escarcega)
-agua_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, pipas_escarcega, 0)
+pipas_escarcega = list(pipas_escarcega)
+total_agua_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, pipas_escarcega, 0)
 
-hielo_escarcega = filter(lambda entrada: 'HIELO' in entrada.descripcion, planta_escarcega)
-hielo_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, hielo_escarcega, 0)
+# Filtramops las entredas correspondientes a Hielo para concreto
+ollas_escarcega = filter(lambda entrada: 'HIELO' in entrada.descripcion, planta_escarcega)
+ollas_escarcega = list(ollas_escarcega)
+total_hielo_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, ollas_escarcega, 0)
 
+# Filtramops las entredas correspondientes a pago de Carga y descarga de Hielo para concreto
+servicio_escarcega = filter(lambda entrada: 'Servicio' in entrada.descripcion, planta_escarcega)
+servicio_escarcega = list(servicio_escarcega)
+total_descarga_escarcega = reduce(lambda x, entrada: x + entrada.cantidad, servicio_escarcega, 0)
+
+
+# Filtramos las entradas correspondientes a la planta Candelaria
 planta_candelaria = filter(lambda entrada: 'Cande' in entrada.planta, entradas)
 planta_candelaria = list(planta_candelaria)
-hielo_candelaria = reduce(lambda x, entrada: x + entrada.cantidad, planta_candelaria, 0)
 
+# Filtramops las entredas correspondientes a Hielo para concreto
+ollas_candelaria = filter(lambda entrada: 'HIELO' in entrada.descripcion, planta_candelaria)
+ollas_candelaria = list(ollas_candelaria)
+total_hielo_candelaria = reduce(lambda x, entrada: x + entrada.cantidad, ollas_candelaria, 0)
+
+# Filtramops las entredas correspondientes a pago de Carga y descarga de Hielo para concreto
+servicio_candelaria = filter(lambda entrada: 'Servicio' in entrada.descripcion, planta_candelaria)
+servicio_candelaria = list(servicio_candelaria)
+total_descarga_candelaria = reduce(lambda x, entrada: x + entrada.cantidad, servicio_candelaria, 0)
+
+
+# Filtramos las entradas correspondientes a la planta Chetumal
 planta_chetumal = filter(lambda entrada: 'Chetu' in entrada.planta, entradas)
 planta_chetumal = list(planta_chetumal)
-hielo_chetumal = reduce(lambda x, entrada: x + entrada.cantidad, planta_chetumal, 0)
 
-print(f"Hay {len(planta_escarcega)} entradas en Planta Escarcega con {agua_escarcega} m3 de Agua y {hielo_escarcega} kg de Hielo")
-print(f"Hay {len(planta_candelaria)} entradas en Planta Candelaria con {hielo_candelaria} kg de Hielo")
-print(f"Hay {len(planta_chetumal)} entradas en Planta Chetumal con {hielo_chetumal} kg de Hielo")
+# Filtramops las entredas correspondientes a Hielo para concreto
+ollas_chetumal = filter(lambda entrada: 'HIELO' in entrada.descripcion, planta_chetumal)
+ollas_chetumal = list(ollas_chetumal)
+total_hielo_chetumal = reduce(lambda x, entrada: x + entrada.cantidad, ollas_chetumal, 0)
 
+# Filtramops las entredas correspondientes a pago de Carga y descarga de Hielo para concreto
+servicio_chetumal = filter(lambda entrada: 'Servicio' in entrada.descripcion, planta_chetumal)
+servicio_chetumal = list(servicio_chetumal)
+total_descarga_chetumal = reduce(lambda x, entrada: x + entrada.cantidad, servicio_chetumal, 0)
+
+# Esta variable guardara la suma de todo lo que se pueda facturar
+importe_total_plantas = 0.0
+
+# Imprimimos el resumen de la planta Escarcega
+if len(planta_escarcega) > 0:
+    
+    importe_total_escarcega = 0.0
+    
+    print("HOLCIM ESCARCEGA")
+    print(f"Hay {len(planta_escarcega)} entradas")
+    
+    if len(pipas_escarcega) > 0:
+        precio = pipas_escarcega[0].precio
+        importe_total = total_agua_escarcega * precio
+        importe_total_escarcega += importe_total
+        print(f"{total_agua_escarcega} m3 de Agua a $ {precio} = $ {importe_total:,.2f}")
+        
+    if len(ollas_escarcega) > 0:
+        precio = ollas_escarcega[0].precio
+        importe_total = total_hielo_escarcega * precio
+        importe_total_escarcega += importe_total
+        print(f"{total_hielo_escarcega:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        
+    if len(servicio_escarcega) > 0:
+        precio = servicio_escarcega[0].precio
+        importe_total = total_descarga_escarcega * precio
+        importe_total_escarcega += importe_total
+        print(f"Servicio de Carga y descarga por {total_descarga_escarcega:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        
+    print(f"TOTAL = $ {importe_total_escarcega:,.2f}")
+    importe_total_plantas += importe_total_escarcega
+        
+
+# Imprimimos el resumen de la planta Candelaria
+if len(planta_candelaria) > 0:
+    
+    importe_total_candelaria = 0.0
+    
+    print(f"\nHOLCIM CANDELARIA")
+    print(f"Hay {len(planta_candelaria)} entradas")
+        
+    if len(ollas_candelaria) > 0:
+        precio = ollas_candelaria[0].precio
+        importe_total = total_hielo_candelaria * precio
+        importe_total_candelaria = importe_total
+        print(f"{total_hielo_candelaria:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        
+    if len(servicio_candelaria) > 0:
+        precio = servicio_candelaria[0].precio
+        importe_total = total_descarga_candelaria * precio
+        importe_total_candelaria = importe_total
+        print(f"Servicio de Carga y descarga por {total_descarga_candelaria:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        
+    print(f"TOTAL = $ {importe_total_candelaria:,.2f}")
+    importe_total_plantas += importe_total_candelaria
+        
+        
+# Imprimimos el resumen de la planta Chetumal
+if len(planta_chetumal) > 0:
+    
+    importe_total_chetumal = 0.0
+    
+    print(f"\nHOLCIM CHETUMAL")
+    print(f"Hay {len(planta_chetumal)} entradas")
+        
+    if len(ollas_chetumal) > 0:
+        precio = ollas_chetumal[0].precio
+        importe_total = total_hielo_chetumal * precio
+        importe_total_chetumal += importe_total
+        print(f"{total_hielo_chetumal:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        
+    if len(servicio_chetumal) > 0:
+        precio = servicio_chetumal[0].precio
+        importe_total = total_descarga_chetumal * precio
+        importe_total_chetumal += importe_total
+        print(f"Servicio de Carga y descarga por {total_descarga_chetumal:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        
+    print(f"TOTAL = $ {importe_total_chetumal:,.2f}")
+    importe_total_plantas += importe_total_chetumal
+    
+if importe_total_plantas != 0.0:
+    print(f"\nIMPORTE TOTAL = $ {importe_total_plantas:,.2f}")
 
 driver.quit()
