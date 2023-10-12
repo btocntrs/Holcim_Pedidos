@@ -14,6 +14,8 @@ from PIL import Image
 
 from entrada import Entrada
 
+from formatting_utils import formato_flotantes
+
 firefox_options = webdriver.FirefoxOptions()
 firefox_options.add_argument('--headless')
 firefox_options.add_argument('--disable-gpu')
@@ -230,21 +232,21 @@ if len(planta_escarcega) > 0:
         precio = pipas_escarcega[0].precio
         importe_total = total_agua_escarcega * precio
         importe_total_escarcega += importe_total
-        print(f"{total_agua_escarcega} m3 de Agua a $ {precio} = $ {importe_total:,.2f}")
+        print(f"{total_agua_escarcega} m3 de Agua a $ {precio} = $ {formato_flotantes(importe_total)}")
         
     if len(ollas_escarcega) > 0:
         precio = ollas_escarcega[0].precio
         importe_total = total_hielo_escarcega * precio
         importe_total_escarcega += importe_total
-        print(f"{total_hielo_escarcega:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        print(f"{formato_flotantes(total_hielo_escarcega)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
         
     if len(servicio_escarcega) > 0:
         precio = servicio_escarcega[0].precio
         importe_total = total_descarga_escarcega * precio
         importe_total_escarcega += importe_total
-        print(f"Servicio de Carga y descarga por {total_descarga_escarcega:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        print(f"Servicio de Carga y descarga por {formato_flotantes(total_descarga_escarcega)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
         
-    print(f"TOTAL = $ {importe_total_escarcega:,.2f}")
+    print(f"TOTAL = $ {formato_flotantes(importe_total_escarcega)}")
     importe_total_plantas += importe_total_escarcega
         
 
@@ -260,15 +262,15 @@ if len(planta_candelaria) > 0:
         precio = ollas_candelaria[0].precio
         importe_total = total_hielo_candelaria * precio
         importe_total_candelaria = importe_total
-        print(f"{total_hielo_candelaria:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        print(f"{formato_flotantes(total_hielo_candelaria)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
         
     if len(servicio_candelaria) > 0:
         precio = servicio_candelaria[0].precio
         importe_total = total_descarga_candelaria * precio
         importe_total_candelaria = importe_total
-        print(f"Servicio de Carga y descarga por {total_descarga_candelaria:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        print(f"Servicio de Carga y descarga por {formato_flotantes(total_descarga_candelaria)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
         
-    print(f"TOTAL = $ {importe_total_candelaria:,.2f}")
+    print(f"TOTAL = $ {formato_flotantes(importe_total_candelaria)}")
     importe_total_plantas += importe_total_candelaria
         
         
@@ -284,18 +286,18 @@ if len(planta_chetumal) > 0:
         precio = ollas_chetumal[0].precio
         importe_total = total_hielo_chetumal * precio
         importe_total_chetumal += importe_total
-        print(f"{total_hielo_chetumal:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        print(f"{formato_flotantes(total_hielo_chetumal)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
         
     if len(servicio_chetumal) > 0:
         precio = servicio_chetumal[0].precio
         importe_total = total_descarga_chetumal * precio
         importe_total_chetumal += importe_total
-        print(f"Servicio de Carga y descarga por {total_descarga_chetumal:,.2f} kg de Hielo a $ {precio} = $ {importe_total:,.2f}")
+        print(f"Servicio de Carga y descarga por {formato_flotantes(total_descarga_chetumal)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
         
-    print(f"TOTAL = $ {importe_total_chetumal:,.2f}")
+    print(f"TOTAL = $ {formato_flotantes(importe_total_chetumal)}")
     importe_total_plantas += importe_total_chetumal
     
 if importe_total_plantas != 0.0:
-    print(f"\nIMPORTE TOTAL = $ {importe_total_plantas:,.2f}")
+    print(f"\nIMPORTE TOTAL = $ {formato_flotantes(importe_total_plantas)}")
 
 driver.quit()
