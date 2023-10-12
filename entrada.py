@@ -1,3 +1,5 @@
+from formatting_utils import formato_flotantes
+
 class Entrada:
     def __init__(self, pedido, fecha, descripcion, cantidad, importe, planta, nota):
         self.pedido = pedido
@@ -18,7 +20,7 @@ class Entrada:
     
     # Imprimimos la entrada    
     def __str__(self) -> str:
-        return f"""{self.pedido}  {self.fecha} {self.descripcion}   {self.cantidad:,.2f}      $ {self.precio}      $ {self.importe:,.2f}   {self.planta}    {self.nota}
+        return f"""{self.pedido}  {self.fecha} {self.descripcion}   {formato_flotantes(self.cantidad)}      $ {self.precio}      $ {formato_flotantes(self.importe)}   {self.planta}    {self.nota}
         --------------------------------------------------------------------------------------------------------"""
 
 
