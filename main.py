@@ -135,7 +135,7 @@ filas = filas[2:]
 
 entradas = []
 
-print(f"\nPedido      Fecha       Descripcion         Cantidad    Precio  Importe         Planta              Nota")
+print(f"\nPedido      Fecha       Descripcion         Cantidad    Precio    Importe         Planta              Nota")
 
 for fila in filas:
     celdas = fila.find_elements(By.TAG_NAME, "td")
