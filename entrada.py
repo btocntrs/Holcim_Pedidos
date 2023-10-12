@@ -7,9 +7,10 @@ class Entrada:
         self.nota = nota       
         
         if "Servicio" in descripcion:
-            self.importe = importe * 1.16
-            self.precio = get_precio_servicio(planta)
-            self.cantidad = importe / self.precio
+            self.importe = round((importe * 1.16), 2)
+            self.precio = self.get_precio_servicio(planta)
+            self.cantidad = self.importe / self.precio
+            self.cantidad = round(self.cantidad, 2)
         else:
             self.cantidad = cantidad
             self.importe = importe
@@ -17,12 +18,12 @@ class Entrada:
     
     # Imprimimos la entrada    
     def __str__(self) -> str:
-        return f"""{self.pedido}  {self.fecha} {self.descripcion}   {self.cantidad}      {self.precio}      {self.importe}   {self.planta}    {self.nota}
+        return f"""{self.pedido}  {self.fecha} {self.descripcion}   {self.cantidad:,.2f}      $ {self.precio}      $ {self.importe:,.2f}   {self.planta}    {self.nota}
         --------------------------------------------------------------------------------------------------------"""
 
 
     # Devolvemos el precio del servicio de carga y descarga dependiente de la planta       
-    def get_precio_servicio(planta):
+    def get_precio_servicio(self, planta):
         if 'Esc' in planta:
             return 0.7308
         elif 'Cande' in planta:
