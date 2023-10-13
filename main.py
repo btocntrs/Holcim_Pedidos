@@ -7,14 +7,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
-import pytesseract
-
 from functools import reduce
-from PIL import Image
 
 from entrada import Entrada
 
 from formatting_utils import formato_flotantes
+from captcha_utils import save_captcha, get_text_captcha_by_imagen
 
 firefox_options = webdriver.FirefoxOptions()
 firefox_options.add_argument('--headless')
@@ -30,29 +28,13 @@ print("Portal cargado con exito")
 user_id_field = driver.find_element(By.ID, 'logonuidfield')
 user_id_field.send_keys('4312283G')
 
-# Este método guarda el captacha en la carpeta actual
-def save_captcha():
-    # Localiza el elemento HTML que contiene la imagen por su atributo src
-    imagen_element = driver.find_element(By.CSS_SELECTOR, "img[src='/irj/servlet/prt/portal/prtroot/com.sap.portal.runtime.logon.ServletImageToken']")
-
-    #Tomar un escreenshoot del elemento y nombrar el archivo como captcha
-    imagen_element.screenshot("captcha.png")
-
-# Esta función descifra el captcha y devuelve el texto correspondiente    
-def get_text_captcha(src):
-    # Abre la imagen en la que deseas realizar OCR
-    imagen = Image.open(src)
-
-    # Realiza OCR en la imagen. Se asegura que todas las letras sean minúsculas y elimina los espacios.
-    return pytesseract.image_to_string(imagen).lower().replace(" ", "")
-
 # Intentamos resolver el caprcha en ingresar al portal las veces que sean necesarias
 while True:
     # Invocamos a la función que guarda el captcha
-    save_captcha()
+    imagen_captcha = save_captcha(driver)
     
     #Obtenemos el texto del captcha y lo guardamos en la variable texto_captcha
-    texto_captcha = get_text_captcha("captcha.png")
+    texto_captcha = get_text_captcha_by_imagen(imagen_captcha)
     
     # Aquí encontramos el elemento donde va el texto del captcha y enviamos el texto
     captcha_response_field = driver.find_element(By.NAME, "j_captcha_response")
