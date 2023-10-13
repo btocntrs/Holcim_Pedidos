@@ -46,15 +46,6 @@ def get_text_captcha(src):
     # Realiza OCR en la imagen. Se asegura que todas las letras sean minúsculas y elimina los espacios.
     return pytesseract.image_to_string(imagen).lower().replace(" ", "")
 
-def read_frames():
-    # Encuentra todos los elementos <iframe> dentro del frame actual
-    frames = driver.find_elements(By.TAG_NAME, "iframe")
-
-    # Itera a través de los frames y obtén sus IDs
-    for frame in frames:
-        frame_id = frame.get_attribute("id")
-        print(f"ID del frame: {frame_id}")
-
 # Intentamos resolver el caprcha en ingresar al portal las veces que sean necesarias
 while True:
     # Invocamos a la función que guarda el captcha
