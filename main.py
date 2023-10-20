@@ -13,6 +13,7 @@ from entrada import Entrada
 
 from formatting_utils import formato_flotantes
 from captcha_utils import save_captcha, get_text_captcha_by_imagen
+from excell_generator import generar_reporte
 
 firefox_options = webdriver.FirefoxOptions()
 firefox_options.add_argument('--headless')
@@ -28,7 +29,7 @@ print("Portal cargado con exito")
 user_id_field = driver.find_element(By.ID, 'logonuidfield')
 user_id_field.send_keys('4312283G')
 
-# Intentamos resolver el caprcha en ingresar al portal las veces que sean necesarias
+# Intentamos resolver el captcha en ingresar al portal las veces que sean necesarias
 while True:
     # Invocamos a la función que guarda el captcha
     imagen_captcha = save_captcha(driver)
@@ -98,7 +99,9 @@ btn_fecha = driver.find_element(By.XPATH, '//*[@id="GFPF.ConsultaPedidosPorFactu
 btn_fecha.click()
 
 #Esperamos a que la tabla recargue los elementos
-wait.until(EC.text_to_be_present_in_element((By.XPATH, '//*[@id="GFPF.ConsultaPedidosPorFacturarView.EBELN_0_editor.0"]'), ""))
+#wait.until(EC.text_to_be_present_in_element((By.XPATH, '//*[@id="GFPF.ConsultaPedidosPorFacturarView.EBELN_0_editor.0"]'), ""))
+#print("Texto esperado con exito")
+wait.until(EC.presence_of_all_elements_located((By.XPATH, '/html/body/table/tbody/tr/td/div/div[1]/span/span[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr/td[1]/table')))
 print("Texto esperado con exito")
 
 # Obtenemos la tabla que tiene los datos
@@ -106,6 +109,7 @@ tabla = driver.find_element(By.XPATH, '/html/body/table/tbody/tr/td/div/div[1]/s
 
 # Extraemos todas la filas de la tabla para luego trabajar en ellas
 filas = tabla.find_elements(By.XPATH, '//tr[@rr]')
+        
 filas = filas[2:]
 
 entradas = []
@@ -272,5 +276,11 @@ if len(planta_chetumal) > 0:
     
 if importe_total_plantas != 0.0:
     print(f"\nIMPORTE TOTAL = $ {formato_flotantes(importe_total_plantas)}")
+    
+    print("\nDeseas exportar los datos? Y/y (Si) o Cualquier tecla para NO")
+    respuesta = input()
+    
+    if respuesta == 'Y' or respuesta == 'y':
+        generar_reporte(entradas)
 
 driver.quit()
