@@ -31,7 +31,7 @@ RUN set -x \
    && tar zxf geckodriver-*.tar.gz \
    && mv geckodriver /usr/bin/
  
-COPY . /app
+COPY ./app /app
  
 WORKDIR /app
  
