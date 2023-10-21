@@ -14,6 +14,7 @@ from entrada import Entrada
 from formatting_utils import formato_flotantes
 from captcha_utils import save_captcha, get_text_captcha_by_imagen
 from excell_generator import generar_reporte
+from files_utils import check_folder_files
 
 firefox_options = webdriver.FirefoxOptions()
 firefox_options.add_argument('--headless')
@@ -28,6 +29,9 @@ print("Portal cargado con exito")
 # Colocamos el nombre de usuario
 user_id_field = driver.find_element(By.ID, 'logonuidfield')
 user_id_field.send_keys('4312283G')
+
+# Verificamos si la carpeta files existe
+check_folder_files()
 
 # Intentamos resolver el captcha en ingresar al portal las veces que sean necesarias
 while True:
