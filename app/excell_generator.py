@@ -43,16 +43,19 @@ def generar_reporte(lista):
     sheet.column_dimensions['F'].width = len(str(sheet["F2"].value)) + 4
     sheet.column_dimensions['G'].width = len(sheet["G2"].value) + 2
     sheet.column_dimensions['H'].width = len(sheet["H2"].value) + 3
+    
+    # Nombre de variable
+    ruta_tabla = "files/mi_tabla.xlsx"
         
     # Guardamos el libro de excell
-    work_book.save("mi_tabla.xlsx")
+    work_book.save(ruta_tabla)
 
     # Cerramos el libro
     work_book.close()
     
     # Utiliza el comando 'start' en Windows para abrir el archivo con el programa predeterminado
     if os.name == 'nt':  # Verifica si el sistema operativo es Windows
-        os.system('start excel "mi_tabla.xlsx"')
+        os.system(f'start excel "{ruta_tabla}"')
     else:
         # Para otros sistemas operativos (como macOS y Linux), utiliza el comando 'open'
         os.system(f'open -a "Microsoft Excel" "mi_tabla.xlsx"')

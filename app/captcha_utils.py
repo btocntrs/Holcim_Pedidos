@@ -3,7 +3,7 @@ from PIL import Image
 import pytesseract
 
 # Este método toma una screenshot del captcha y la guarda
-def save_captcha(driver, file_name="captcha.png"):
+def save_captcha(driver, file_name="files/captcha.png"):
     imagen_element = driver.find_element(By.CSS_SELECTOR, "img[src='/irj/servlet/prt/portal/prtroot/com.sap.portal.runtime.logon.ServletImageToken']")
     imagen_element.screenshot(file_name)
     return Image.open(file_name)
