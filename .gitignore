@@ -1,4 +1,6 @@
 __pycache__/
 venv/
+build/
+dist/
 captcha.png
 mi_tabla.xlsx
