@@ -54,10 +54,10 @@ while True:
     
     try:
         password_field = driver.find_element(By.ID, "logonpassfield")
-        password_field.send_keys("Gis211118am9.")
+        password_field.send_keys("Feliz2024.")
 
         token_field = driver.find_element(By.ID, "logontoken")
-        token_field.send_keys("877060")
+        token_field.send_keys("768881")
 
         access_btn = driver.find_element(By.NAME, "uidPasswordLogon")
         access_btn.click()
@@ -198,6 +198,20 @@ servicio_chetumal = filter(lambda entrada: 'Servicio' in entrada.descripcion, pl
 servicio_chetumal = list(servicio_chetumal)
 total_descarga_chetumal = reduce(lambda x, entrada: x + entrada.cantidad, servicio_chetumal, 0)
 
+# Filtramos las entradas correspondientes a la planta Campeche
+planta_campeche = filter(lambda entrada: 'Camp' in entrada.planta, entradas)
+planta_campeche = list(planta_campeche)
+
+# Filtramops las entredas correspondientes a Hielo para concreto
+ollas_campeche = filter(lambda entrada: 'HIELO' in entrada.descripcion, planta_campeche)
+ollas_campeche = list(ollas_campeche)
+total_hielo_campeche = reduce(lambda x, entrada: x + entrada.cantidad, ollas_campeche, 0)
+
+# Filtramops las entredas correspondientes a pago de Carga y descarga de Hielo para concreto
+servicio_campeche = filter(lambda entrada: 'Servicio' in entrada.descripcion, planta_campeche)
+servicio_campeche = list(servicio_campeche)
+total_descarga_campeche = reduce(lambda x, entrada: x + entrada.cantidad, servicio_campeche, 0)
+
 # Esta variable guardara la suma de todo lo que se pueda facturar
 importe_total_plantas = 0.0
 
@@ -277,6 +291,29 @@ if len(planta_chetumal) > 0:
         
     print(f"TOTAL = $ {formato_flotantes(importe_total_chetumal)}")
     importe_total_plantas += importe_total_chetumal
+    
+    # Imprimimos el resumen de la planta Campeche
+if len(planta_campeche) > 0:
+    
+    importe_total_campeche = 0.0
+    
+    print(f"\nHOLCIM CAMPECHE")
+    print(f"Hay {len(planta_campeche)} entradas")
+        
+    if len(ollas_campeche) > 0:
+        precio = ollas_campeche[0].precio
+        importe_total = total_hielo_campeche * precio
+        importe_total_campeche += importe_total
+        print(f"{formato_flotantes(total_hielo_campeche)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
+        
+    if len(servicio_campeche) > 0:
+        precio = servicio_campeche[0].precio
+        importe_total = total_descarga_campeche * precio
+        importe_total_campeche += importe_total
+        print(f"Servicio de Carga y descarga por {formato_flotantes(total_descarga_campeche)} kg de Hielo a $ {precio} = $ {formato_flotantes(importe_total)}")
+        
+    print(f"TOTAL = $ {formato_flotantes(importe_total_campeche)}")
+    importe_total_plantas += importe_total_campeche
     
 if importe_total_plantas != 0.0:
     print(f"\nIMPORTE TOTAL = $ {formato_flotantes(importe_total_plantas)}")
