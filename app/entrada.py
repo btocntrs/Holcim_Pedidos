@@ -32,5 +32,7 @@ class Entrada:
             return 1.2296
         elif 'Chetu' in planta:
             return 2.0532
+        elif 'Camp' in planta:
+            return 1.7864
         else:
             return 0.0
