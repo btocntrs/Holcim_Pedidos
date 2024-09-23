@@ -54,7 +54,7 @@ while True:
     
     try:
         password_field = driver.find_element(By.ID, "logonpassfield")
-        password_field.send_keys("GruPoIsIN2111.")
+        password_field.send_keys("Gis091221am9.")
 
         token_field = driver.find_element(By.ID, "logontoken")
         token_field.send_keys("768881")
